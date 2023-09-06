@@ -1,0 +1,87 @@
+{
+  "Problem":
+  {
+    "Type": "Electrostatic",
+    "Verbose": 2,
+    "Output": "/scratch/user/uqdsomm1/Palace-Project2/outputFiles/transmon_cap"
+  },
+  "Model":
+  {
+    "Mesh": "/scratch/user/uqdsomm1/Palace-Project2/inputFiles/transmon_cap/transmon_cap.msh",
+    "L0": 1.0e-3  // mm
+  },
+  "Domains":
+  {
+    "Materials":
+    [
+      {
+        "Attributes": [12],  // Air
+        "Permeability": 1.0,
+        "Permittivity": 1.0,
+        "LossTan": 0.0
+      },
+      {
+        "Attributes": [11],  // Silicon
+        "Permeability": 1.0,
+        "Permittivity": 11.7,
+        "LossTan": 1.2e-5
+      }
+    ]
+  },
+  "Boundaries":
+  {
+    "Ground":
+    {
+      "Attributes": [13] // far field
+    },
+    "Terminal":
+    [
+      {
+        "Index": 1,
+        "Attributes": [10]  // Ground plane
+      },
+      {
+        "Index": 2,
+        "Attributes": [3]  // Feed line
+      },
+      {
+        "Index": 3,
+        "Attributes": [9]  // res 1
+      }
+    ],
+    "Postprocessing":  // Capacitance from charge instead of energy
+    {
+      "Capacitance":
+      [
+        {
+          "Index": 1,
+          "Attributes": [10]  // Ground plane
+        },
+        {
+          "Index": 2,
+          "Attributes": [3]  // Feed line
+        },
+        {
+          "Index": 3,
+          "Attributes": [9]  // res 1
+        }
+      ]
+    }
+  },
+  "Solver":
+  {
+    "Order": 2,
+    "Electrostatic":
+    {
+      "Save": 3
+    },
+    "Linear":
+    {
+      "Type": "BoomerAMG",
+      "KSPType": "CG",
+      "Tol": 1.0e-8,
+      "MaxIts": 100
+    }
+  }
+}
+
